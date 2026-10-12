@@ -16,8 +16,8 @@
   --color-light: #f8f9fa;
   --color-white: #ffffff;
 
-  --font-sans: var(--font-lato), Arial, Helvetica, sans-serif;
-  --font-display: var(--font-work-sans), Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-inter), Arial, Helvetica, sans-serif;
+  --font-display: var(--font-jakarta), Arial, Helvetica, sans-serif;
 
   --radius-card: 4px;
   --transition-base: 0.15s ease-in-out;
@@ -42,10 +42,11 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   color: var(--color-navy);
-  font-weight: 900;
-  line-height: 1.2;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 a {

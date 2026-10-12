@@ -27,31 +27,38 @@ export default async function HomePage() {
       <section
         style={{
           backgroundColor: "var(--color-green-hero)",
-          backgroundImage: `linear-gradient(115deg, rgba(40,167,69,0.80) 0%, rgba(20,26,40,0.72) 100%), url('${heroImage}')`,
+          backgroundImage: `linear-gradient(115deg, rgba(40,167,69,0.50) 0%, rgba(20,26,40,0.20) 100%), url('${heroImage}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="container-site py-16 md:py-24">
-          <p
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-white/90 text-xs font-bold uppercase tracking-[0.2em] mb-3"
-          >
-            {SITE.name}
-          </p>
-          <h1 className="text-white text-4xl md:text-5xl font-black leading-tight max-w-3xl">
-            {heroTitle}
-          </h1>
-          <p className="text-white/90 text-lg mt-4 max-w-2xl">
-            {heroSubtitle}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/blog" className="btn" style={{ backgroundColor: "white", color: "var(--color-green-dark)" }}>
-              Read the latest
-            </Link>
-            <Link href="/category" className="btn btn-outline" style={{ borderColor: "white", color: "white" }}>
-              Browse topics
-            </Link>
+        <div className="container-site flex flex-col justify-between py-12 md:py-14 min-h-[480px] md:min-h-[450px]">
+          {/* Top: heading + subtitle */}
+          <div>
+            <h1 className="text-navy text-4xl md:text-5xl font-extrabold leading-tight max-w-3xl">
+              {heroTitle}
+            </h1>
+            <p className="text-white text-base md:text-lg mt-4 max-w-2xl">
+              {heroSubtitle}
+            </p>
+          </div>
+
+          {/* Bottom: buttons (left) + brand label (right) */}
+          <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-wrap gap-3">
+              <Link href="/blog" className="btn" style={{ backgroundColor: "white", color: "var(--color-green-dark)" }}>
+                Read the latest
+              </Link>
+              <Link href="/category" className="btn btn-outline" style={{ borderColor: "white", color: "white" }}>
+                Browse topics
+              </Link>
+            </div>
+            <span
+              style={{ fontFamily: "var(--font-display)" }}
+              className="hidden sm:block text-white text-xs font-bold uppercase tracking-[0.2em]"
+            >
+              {SITE.name}
+            </span>
           </div>
         </div>
       </section>
@@ -75,12 +82,14 @@ export default async function HomePage() {
       )}
 
       {/* ───── Latest posts ───── */}
-      <section className="container-site py-10">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-navy text-3xl font-black">Latest</h2>
-          <Link href="/blog" className="text-sm font-bold text-green uppercase" style={{ fontFamily: "var(--font-display)" }}>
-            View all →
-          </Link>
+      <section className="container-site py-5">
+        <div className="mb-6">
+          <h2 className="text-navy text-3xl font-black text-center">Featured Blogs</h2>
+          <div className="flex justify-end mt-1">
+            <Link href="/blog" className="text-sm font-bold text-green uppercase" style={{ fontFamily: "var(--font-display)" }}>
+              View all →
+            </Link>
+          </div>
         </div>
 
         {posts.length === 0 ? (

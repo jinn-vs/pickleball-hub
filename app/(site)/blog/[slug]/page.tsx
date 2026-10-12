@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getArticleBySlug, getAllArticleSlugs } from "@/lib/supabase/queries";
-import { buildArticleMetadata, blogPostingSchema, breadcrumbSchema, faqSchema } from "@/lib/seo";
+import { buildArticleMetadata, blogPostingSchema, faqSchema } from "@/lib/seo";
 import JsonLd from "@/components/seo/JsonLd";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import ArticleBody from "@/components/content/ArticleBody";
 
 export const revalidate = 3600;
@@ -39,19 +39,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   return (
     <main>
       <JsonLd data={blogPostingSchema(post, slug)} />
-      <JsonLd data={breadcrumbSchema([
-        { name: "Home", path: "/" },
-        { name: "News", path: "/blog" },
-        { name: post.title, path: `/blog/${slug}` },
-      ])} />
       {fq && <JsonLd data={fq} />}
 
       <article className="container-site py-10 max-w-3xl">
-        <nav className="flex items-center gap-2 text-xs text-muted mb-5">
-          <Link href="/" className="hover:text-green">Home</Link><span>/</span>
-          <Link href="/blog" className="hover:text-green">News</Link><span>/</span>
-          <span className="text-ink truncate">{post.title}</span>
-        </nav>
+        <div className="mb-5">
+          <Breadcrumbs
+            items={[
+              { name: "Home", path: "/" },
+              { name: "News", path: "/blog" },
+              { name: post.title, path: `/blog/${slug}` },
+            ]}
+          />
+        </div>
 
         {(post.section || post.category?.name) && (
           <span style={{ backgroundColor: "var(--color-green)", fontFamily: "var(--font-display)" }} className="inline-block text-white text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded mb-4">

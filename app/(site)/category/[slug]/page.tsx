@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCategoryBySlug, getAllCategories, getArticlesByCategory } from "@/lib/supabase/queries";
-import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
-import JsonLd from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/seo";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import PostCard from "@/components/content/PostCard";
 
 export const revalidate = 3600;
@@ -34,19 +33,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   return (
     <main>
-      <JsonLd data={breadcrumbSchema([
-        { name: "Home", path: "/" },
-        { name: "Categories", path: "/category" },
-        { name: category.name, path: `/category/${slug}` },
-      ])} />
-
       <section style={{ backgroundColor: "var(--color-navy)" }}>
         <div className="container-site py-12">
-          <nav className="flex items-center gap-2 text-xs mb-4" style={{ color: "#8891a5" }}>
-            <Link href="/" className="hover:text-green">Home</Link><span>/</span>
-            <Link href="/category" className="hover:text-green">Categories</Link><span>/</span>
-            <span style={{ color: "#aeb4c0" }}>{category.name}</span>
-          </nav>
+          <div className="mb-4">
+            <Breadcrumbs
+              variant="light"
+              items={[
+                { name: "Home", path: "/" },
+                { name: "Categories", path: "/category" },
+                { name: category.name, path: `/category/${slug}` },
+              ]}
+            />
+          </div>
           <h1 className="text-white text-4xl font-black">{category.name}</h1>
           {category.description && <p style={{ color: "#aeb4c0" }} className="mt-2 max-w-2xl">{category.description}</p>}
         </div>
