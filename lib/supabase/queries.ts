@@ -1,5 +1,5 @@
 import { db } from "./db";
-import type { ArticleWithRelations, Category } from "./types";
+import type { ArticleWithRelations, Category, SiteSettings } from "./types";
 
 /*
   All reads go through the anon client (RLS-protected) and are fully null-safe:
@@ -13,6 +13,15 @@ async function safe<T>(label: string, run: () => Promise<T>, fallback: T): Promi
     console.error(`${label}:`, (e as Error).message);
     return fallback;
   }
+}
+
+// ───────── Site settings ─────────
+export function getSiteSettings(): Promise<SiteSettings | null> {
+  return safe("getSiteSettings", async () => {
+    const { data, error } = await db().from("site_settings").select("*").eq("id", 1).maybeSingle();
+    if (error) throw new Error(error.message);
+    return data;
+  }, null);
 }
 
 // ───────── Categories ─────────

@@ -62,6 +62,19 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["categories"]["Row"]>;
         Relationships: [];
       };
+      site_settings: {
+        Row: {
+          id: number;
+          hero_title: string | null;
+          hero_subtitle: string | null;
+          hero_image_url: string | null;
+          logo_url: string | null;
+          updated_at: string | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["site_settings"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["site_settings"]["Row"]>;
+        Relationships: [];
+      };
       authors: {
         Row: {
           id: string;
@@ -91,6 +104,7 @@ export interface Database {
 export type Article = Database["public"]["Tables"]["articles"]["Row"];
 export type Category = Database["public"]["Tables"]["categories"]["Row"];
 export type Author = Database["public"]["Tables"]["authors"]["Row"];
+export type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
 
 // Shapes with joined relations (what queries return)
 export type ArticleWithRelations = Article & {

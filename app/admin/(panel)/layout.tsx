@@ -6,6 +6,7 @@ const nav = [
   { label: "Articles", href: "/admin/dashboard/articles" },
   { label: "Categories", href: "/admin/dashboard/categories" },
   { label: "Authors", href: "/admin/dashboard/authors" },
+  { label: "Site Settings", href: "/admin/dashboard/settings" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

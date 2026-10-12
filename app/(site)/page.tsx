@@ -1,13 +1,25 @@
 import Link from "next/link";
-import { getLatestArticles, getAllCategories } from "@/lib/supabase/queries";
+import { getLatestArticles, getAllCategories, getSiteSettings } from "@/lib/supabase/queries";
 import { SITE } from "@/site.config";
 import PostCard from "@/components/content/PostCard";
 
 export const revalidate = 3600;
 
+const DEFAULT_HERO_TITLE = "Everything pickleball — news, drills & guides to grow your game.";
+const DEFAULT_HERO_SUBTITLE = "Techniques, rules, tournaments and the latest from the courts.";
+
 export default async function HomePage() {
-  const [posts, categories] = await Promise.all([getLatestArticles(9), getAllCategories()]);
+  const [posts, categories, settings] = await Promise.all([
+    getLatestArticles(9),
+    getAllCategories(),
+    getSiteSettings(),
+  ]);
   const [hero, ...rest] = posts;
+
+  // Hero image: admin-uploaded (Supabase) first, else the bundled /hero.jpg fallback.
+  const heroImage = settings?.hero_image_url || SITE.heroImage;
+  const heroTitle = settings?.hero_title || DEFAULT_HERO_TITLE;
+  const heroSubtitle = settings?.hero_subtitle || DEFAULT_HERO_SUBTITLE;
 
   return (
     <main>
@@ -15,7 +27,7 @@ export default async function HomePage() {
       <section
         style={{
           backgroundColor: "var(--color-green-hero)",
-          backgroundImage: `linear-gradient(115deg, rgba(40,167,69,0.80) 0%, rgba(20,26,40,0.72) 100%), url('${SITE.heroImage}')`,
+          backgroundImage: `linear-gradient(115deg, rgba(40,167,69,0.80) 0%, rgba(20,26,40,0.72) 100%), url('${heroImage}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -28,10 +40,10 @@ export default async function HomePage() {
             {SITE.name}
           </p>
           <h1 className="text-white text-4xl md:text-5xl font-black leading-tight max-w-3xl">
-            Everything pickleball — news, drills & guides to grow your game.
+            {heroTitle}
           </h1>
           <p className="text-white/90 text-lg mt-4 max-w-2xl">
-            Techniques, rules, tournaments and the latest from the courts.
+            {heroSubtitle}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/blog" className="btn" style={{ backgroundColor: "white", color: "var(--color-green-dark)" }}>

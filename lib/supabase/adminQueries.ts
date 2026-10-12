@@ -18,6 +18,11 @@ export async function adminGetArticle(id: string) {
   return data;
 }
 
+export async function adminGetSettings() {
+  const { data } = await adminClient.from("site_settings").select("*").eq("id", 1).maybeSingle();
+  return data;
+}
+
 export async function adminListCategories() {
   const { data } = await adminClient.from("categories").select("*").order("name");
   return data ?? [];

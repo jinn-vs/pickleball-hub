@@ -32,6 +32,14 @@ export const authorSchema = z.object({
   photo_url: z.string().url().optional().nullable(),
 });
 
+export const settingsSchema = z.object({
+  hero_title: z.string().max(160).optional().nullable(),
+  hero_subtitle: z.string().max(300).optional().nullable(),
+  hero_image_url: z.string().url().optional().nullable(),
+  logo_url: z.string().url().optional().nullable(),
+});
+
 export type ArticleInput = z.infer<typeof articleSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type AuthorInput = z.infer<typeof authorSchema>;
+export type SettingsInput = z.infer<typeof settingsSchema>;
