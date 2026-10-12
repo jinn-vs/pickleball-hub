@@ -64,7 +64,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <div className="flex items-center gap-3 mt-5 text-sm text-muted">
           {post.author?.photo_url && (
             <span className="relative w-9 h-9 rounded-full overflow-hidden">
-              <Image src={post.author.photo_url} alt={post.author.name} fill className="object-cover" />
+              {/* plain img: author photos can come from any host */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={post.author.photo_url} alt={post.author.name} className="absolute inset-0 w-full h-full object-cover" />
             </span>
           )}
           {post.author?.name && <span className="font-semibold text-ink">{post.author.name}</span>}
@@ -103,7 +105,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <div style={{ border: "1px solid #e9ecef", backgroundColor: "var(--color-light)" }} className="rounded-lg p-5 flex gap-4 mt-10">
             {post.author.photo_url && (
               <span className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                <Image src={post.author.photo_url} alt={post.author.name} fill className="object-cover" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={post.author.photo_url} alt={post.author.name} className="absolute inset-0 w-full h-full object-cover" />
               </span>
             )}
             <div>

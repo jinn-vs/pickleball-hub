@@ -40,7 +40,11 @@ export default function EntityManager({
   async function submit() {
     setBusy(true);
     setError("");
-    const payload = editId ? { id: editId, ...form } : form;
+    // Empty optional fields → null (so blank photo/description/bio is allowed)
+    const cleaned = Object.fromEntries(
+      Object.entries(form).map(([k, v]) => [k, v === "" ? null : v])
+    );
+    const payload = editId ? { id: editId, ...cleaned } : cleaned;
     const res = await fetch(endpoint, {
       method: editId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
