@@ -15,6 +15,8 @@ export async function POST(request: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   revalidatePath("/blog");
+  revalidatePath("/blog/[slug]", "page"); // refresh article pages (author info)
+  revalidatePath("/");
   return NextResponse.json(data);
 }
 
@@ -32,6 +34,8 @@ export async function PUT(request: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   revalidatePath("/blog");
+  revalidatePath("/blog/[slug]", "page"); // refresh article pages (author info)
+  revalidatePath("/");
   return NextResponse.json(data);
 }
 
