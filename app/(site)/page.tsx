@@ -5,7 +5,7 @@ import PostCard from "@/components/content/PostCard";
 
 export const revalidate = 3600;
 
-const DEFAULT_HERO_TITLE = "Everything pickleball — news, drills & guides to grow your game.";
+const DEFAULT_HERO_TITLE = "Everything pickleball, news, drills & guides to grow your game.";
 const DEFAULT_HERO_SUBTITLE = "Techniques, rules, tournaments and the latest from the courts.";
 
 export default async function HomePage() {

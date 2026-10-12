@@ -9,7 +9,7 @@ export const SITE = {
     "Pickleball news, drills, rules, tournaments and how-to guides — everything to level up your game.",
   ogImage: "/og-image.png",
   logo: "/logo.png",
-  heroImage: "/hero.jpg", // drop a landscape photo at public/hero.jpg to show it
+  heroImage: "/hero.webp", // drop a landscape photo at public/hero.jpg to show it
   twitter: process.env.NEXT_PUBLIC_TWITTER ?? "@pickleball",
   locale: "en_US",
 } as const;
