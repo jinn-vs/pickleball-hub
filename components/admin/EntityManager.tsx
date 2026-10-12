@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Field = { key: string; label: string; type?: "text" | "textarea"; auto?: "slug-from" };
+type Field = { key: string; label: string; type?: "text" | "textarea" | "image"; auto?: "slug-from" };
 type Row = Record<string, string | null | undefined> & { id: string };
 
 function slugify(t: string) {
@@ -26,7 +26,26 @@ export default function EntityManager({
   const [form, setForm] = useState<Record<string, string>>(blank);
   const [editId, setEditId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
   const [error, setError] = useState("");
+
+  async function uploadImage(key: string, file: File) {
+    setUploadingKey(key);
+    setError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.error ?? "Upload failed");
+        return;
+      }
+      set(key, json.url as string);
+    } finally {
+      setUploadingKey(null);
+    }
+  }
 
   const set = (k: string, v: string) => {
     setForm((f) => {
@@ -91,13 +110,37 @@ export default function EntityManager({
               <label className="text-[#9ca3af] text-xs block mb-1">{f.label}</label>
               {f.type === "textarea" ? (
                 <textarea value={form[f.key] ?? ""} onChange={(e) => set(f.key, e.target.value)} rows={3} style={fieldStyle} className={`${fieldCls} resize-none`} />
+              ) : f.type === "image" ? (
+                <div className="space-y-2">
+                  {form[f.key] ? (
+                    <div className="relative w-20 h-20 rounded-full overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={form[f.key]} alt="preview" className="absolute inset-0 w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div style={{ border: "1px dashed #374151" }} className="w-20 h-20 rounded-full flex items-center justify-center text-[#6b7280] text-[10px] text-center px-1">
+                      {uploadingKey === f.key ? "Uploading…" : "No image"}
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && uploadImage(f.key, e.target.files[0])}
+                    className="text-xs text-[#9ca3af]"
+                  />
+                  {form[f.key] && (
+                    <button type="button" onClick={() => set(f.key, "")} className="block text-[11px] font-semibold" style={{ color: "#f87171" }}>
+                      Remove image
+                    </button>
+                  )}
+                </div>
               ) : (
                 <input value={form[f.key] ?? ""} onChange={(e) => set(f.key, e.target.value)} style={fieldStyle} className={fieldCls} />
               )}
             </div>
           ))}
           <div className="flex gap-2">
-            <button onClick={submit} disabled={busy} className="btn btn-primary flex-1 disabled:opacity-50">{editId ? "Update" : "Add"}</button>
+            <button onClick={submit} disabled={busy || !!uploadingKey} className="btn btn-primary flex-1 disabled:opacity-50">{editId ? "Update" : "Add"}</button>
             {editId && (
               <button onClick={() => { setEditId(null); setForm(blank); }} style={{ backgroundColor: "#374151", color: "#fff" }} className="btn">Cancel</button>
             )}

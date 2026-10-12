@@ -14,7 +14,7 @@ export default async function AuthorsAdminPage() {
         { key: "name", label: "Name" },
         { key: "slug", label: "Slug", auto: "slug-from" },
         { key: "bio", label: "Bio", type: "textarea" },
-        { key: "photo_url", label: "Photo URL" },
+        { key: "photo_url", label: "Photo", type: "image" },
       ]}
     />
   );
